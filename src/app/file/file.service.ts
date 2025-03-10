@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface File {
   id: number;
@@ -16,6 +16,12 @@ export interface File {
   checksum: string;
   downloaded: boolean;
   status: string;
+  downloadStats:
+    | {
+        speed: number;
+        progress: number;
+      }
+    | undefined;
 }
 
 @Injectable({
@@ -26,5 +32,15 @@ export class FileService {
 
   getFiles(): Observable<File[]> {
     return this.http.get<File[]>(environment.apiUrl + '/files');
+  }
+
+  getDownloadingFiles(): Observable<File[]> {
+    return this.http.get<File[]>(environment.apiUrl + '/files/downloading');
+  }
+
+  downloadFile(url: string): Observable<File> {
+    return this.http.post<File>(environment.apiUrl + '/download/get', {
+      url: url,
+    });
   }
 }

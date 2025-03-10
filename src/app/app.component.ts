@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -7,10 +7,9 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(private router: Router) {}
-  currentRoute: string = '';
+  currentRoute = '';
   title = 'vpsdownloader';
 
   ngOnInit() {
@@ -18,5 +17,4 @@ export class AppComponent {
       this.currentRoute = this.router.url;
     });
   }
-
 }
