@@ -10,6 +10,5 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 })
 export class TableComponent {
   files = input<File[]>([]);
-  @Input() title = 'Fichiers';
   @Input() downloading = false;
 }

@@ -1,33 +1,17 @@
-<div class="md:flex">
-  <button
-    (click)="openUrlForm()"
-    type="button"
-    class="ml-auto text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-  >
-    Purple to Pink
-  </button>
+<!-- Do some link to other pages with tailwind -->
+<div class="flex flex-col items-center justify-center h-150">
+  <h1 class="text-4xl font-bold mb-4">Welcome to downloader</h1>
+  <p class="text-lg mb-8">This app can be used to download files</p>
+  <div class="flex space-x-4">
+    <a
+      routerLink="files"
+      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >Fichiers</a
+    >
+    <a
+      routerLink="/downloads"
+      class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      >Telechargements</a
+    >
+  </div>
 </div>
-@if (showUrlForm) {
-  <input
-    type="text"
-    class="w-full p-2 mt-4 mb-4 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-purple-200 dark:focus:ring-purple-800"
-    placeholder="URL"
-    [formControl]="urlToDownload"
-  />
-  <button
-    (click)="downloadFile()"
-    type="button"
-    class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-  >
-    Download
-  </button>
-}
-
-<app-table
-  [files]="downloadingFiles()"
-  [title]="'Fichiers en cours de téléchargement'"
-  [downloading]="true"
->
-</app-table>
-<div class="mb-4"></div>
-<app-table [files]="files()" [title]="'Derniers fichiers'"> </app-table>

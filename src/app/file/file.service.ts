@@ -23,6 +23,12 @@ export interface File {
       }
     | undefined;
 }
+export interface FileUpdate {
+  fileId: number;
+  status: string;
+  speed: number;
+  progress: number;
+}
 
 @Injectable({
   providedIn: 'root',
