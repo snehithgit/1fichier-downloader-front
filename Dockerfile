@@ -1,30 +1,42 @@
+# Build stage
 FROM --platform=linux/arm64 node:20 AS build
-# Create a Virtual directory inside the docker image
-WORKDIR /dist/src/app
-# Copy files to virtual directory
-# COPY package.json package-lock.json ./
-# Run command in Virtual directory
-RUN npm cache clean --force
-# Copy files from local machine to virtual directory in docker image
-COPY . .
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
 RUN npm install
+
+# Copy app source
+COPY . .
+
+
+# Build the app
 RUN npm run build:prod
 
-
-
+# Production stage
 FROM --platform=linux/arm64 caddy:alpine
 
-# Set the working directory for the final container
-WORKDIR /app
+# Install any required packages
+RUN apk --no-cache add curl
 
-# Copy the Angular build output to the final location
-COPY --from=build /dist/src/app/dist/vpsdownloader/browser ./www
+# Copy built app from build stage
+COPY --from=build /usr/src/app/dist/vpsdownloader/browser /srv
 
-# Copy the Caddyfile to the final location
+# Copy Caddy configuration
 COPY ./docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
-# Expose the port for Caddy
+# Create necessary directories and set permissions
+RUN mkdir -p /data/caddy \
+    && chown -R caddy:caddy /srv /data/caddy \
+    && chmod -R 755 /srv
+
+# Expose ports
 EXPOSE 80
 
-# Command to start Caddy
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile"]
+# Set user
+USER caddy
+
+# Run Caddy
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
