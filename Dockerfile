@@ -1,4 +1,4 @@
-FROM node:23.7 AS build
+FROM --platform=linux/arm64 node:20 AS build
 # Create a Virtual directory inside the docker image
 WORKDIR /dist/src/app
 # Copy files to virtual directory
@@ -12,7 +12,7 @@ RUN npm run build:prod
 
 
 
-FROM caddy:latest
+FROM --platform=linux/arm64 caddy:alpine
 
 # Set the working directory for the final container
 WORKDIR /app
